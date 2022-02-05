@@ -1,0 +1,7 @@
+name: Shrooms
+version: '${project.version}'
+main: de.sirguard.shrooms.Shrooms
+api-version: 1.18
+commands:
+  setup:
+
