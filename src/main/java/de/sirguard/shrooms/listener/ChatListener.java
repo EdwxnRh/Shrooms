@@ -15,12 +15,12 @@ public class ChatListener implements Listener {
     public void onChat(AsyncChatEvent event) {
         event.setCancelled(true);
 
-        Team team = GameManager.playersMap.get(event.getPlayer()).getTeam();
+        Team team = GameManager.playersMap.get(event.getPlayer().getUniqueId().toString()).getTeam();
 
         if(team != null) {
             Bukkit.broadcast(Component.text("§" + Teams.getTeamByDisplayName(team.getName()).getColor() + event.getPlayer().getName() + " §8>> §7").append(event.message()));
         } else {
-            Bukkit.broadcast(Component.text("§b" + event.getPlayer().getName() + " §8>> §7").append(event.message()));
+            Bukkit.broadcast(Component.text("§7" + event.getPlayer().getName() + " §8>> §7").append(event.message()));
         }
     }
 }

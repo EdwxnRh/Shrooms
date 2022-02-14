@@ -15,11 +15,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
-public class PlayerInteractListener implements Listener {
+public class PreGameSelectListener implements Listener {
 
     Inventory teamSelection;
+    Inventory kitSelectionPageOne;
+    Inventory kitSelectionPageTwo;
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -68,9 +70,9 @@ public class PlayerInteractListener implements Listener {
                 player.openInventory(votingInventory);
             }
             case CHEST -> {
-                Inventory kitSelectionPageOne = Bukkit.createInventory(null, 9*5, "§b§lKits - Page: " + "1");
-                Inventory kitSelectionPageTwo = Bukkit.createInventory(null, 9*5, "§b§lKits - Page: " + "2");
-
+                kitSelectionPageOne = Bukkit.createInventory(null, 9*5, "§b§lKits - Page: " + "1");
+                kitSelectionPageTwo = Bukkit.createInventory(null, 9*5, "§b§lKits - Page: " + "2");
+                /*
                 ItemStack arrowLeft = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
                 SkullMeta arrowLeftMeta = (SkullMeta) arrowLeft.getItemMeta();
                 arrowLeftMeta.setOwner("MHF_ArrowLeft");
@@ -82,12 +84,22 @@ public class PlayerInteractListener implements Listener {
                 arrowRightMeta.setOwner("MHF_ArrowRight");
                 arrowRightMeta.setDisplayName("§aNext Page");
                 arrowRight.setItemMeta(arrowRightMeta);
+                */
 
+                ItemStack prevPage = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+                ItemMeta prevMeta = prevPage.getItemMeta();
+                prevMeta.setDisplayName("§cPrevious Page");
+                prevPage.setItemMeta(prevMeta);
 
-                kitSelectionPageOne.setItem(18, arrowLeft);
-                kitSelectionPageOne.setItem(26, arrowRight);
-                kitSelectionPageTwo.setItem(18, arrowLeft);
-                kitSelectionPageTwo.setItem(26, arrowRight);
+                ItemStack nextPage = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+                ItemMeta nextMeta = nextPage.getItemMeta();
+                nextMeta.setDisplayName("§aNext Page");
+                nextPage.setItemMeta(nextMeta);
+
+                kitSelectionPageOne.setItem(18, prevPage);
+                kitSelectionPageOne.setItem(26, nextPage);
+                kitSelectionPageTwo.setItem(18, prevPage);
+                kitSelectionPageTwo.setItem(26, nextPage);
 
                 player.openInventory(kitSelectionPageOne);
             }

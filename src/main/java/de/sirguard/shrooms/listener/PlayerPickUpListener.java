@@ -13,7 +13,7 @@ public class PlayerPickUpListener implements Listener {
         Player player = event.getPlayer();
 
         if(event.getItem().getItemStack().getType() == Material.RED_MUSHROOM) {
-            GameManager.playersMap.get(player).addBalance();
+            GameManager.playersMap.get(player.getUniqueId().toString()).addBalance();
             event.getItem().remove();
         }
     }

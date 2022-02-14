@@ -1,6 +1,10 @@
 package de.sirguard.shrooms.listener;
 
+import com.sun.tools.javac.Main;
+import de.sirguard.shrooms.Shrooms;
+import de.sirguard.shrooms.enums.GameState;
 import de.sirguard.shrooms.utils.GameManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,12 +16,33 @@ public class QuitListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        GameManager.playersInTeamsEditMode.remove(player);
+        if (GameManager.playersInTeamsEditMode.containsKey(player)) {
+            GameManager.playersInTeamsEditMode.remove(player);
+        }
 
-        GameManager.playersInBuildMode.remove(player);
+        if (GameManager.playersInBuildMode.contains(player)) {
+            GameManager.playersInBuildMode.remove(player);
+        }
 
-        GameManager.playersMap.remove(player).getTeam().removePlayer(player);
+        if (GameManager.votedMap.containsKey(player)) {
+            GameManager.votedMap.remove(player);
+        }
 
-        GameManager.votedMap.remove(player);
+        if (GameManager.gameState == GameState.RUNNING) {
+            LoginListener.relogable_players.add(player.getUniqueId().toString());
+
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Shrooms.plugin, new Runnable() {
+                @Override
+                public void run() {
+                    if (LoginListener.relogable_players.contains(player.getUniqueId().toString())) {
+                        LoginListener.relogable_players.remove(player.getUniqueId().toString());
+                        if (GameManager.playersMap.containsKey(player.getUniqueId().toString())) {
+                            GameManager.playersMap.remove(player.getUniqueId().toString()).getTeam().removePlayer(player);
+                        }
+                    }
+
+                }
+            }, 20*4);
+        }
     }
 }

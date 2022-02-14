@@ -3,6 +3,7 @@ package de.sirguard.shrooms.utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -30,6 +31,11 @@ public class ItemBuilder {
 
     public ItemBuilder setLore(String... lore){
         itemMeta.setLore(Arrays.asList(lore));
+        return this;
+    }
+
+    public ItemBuilder setEnchantment(Enchantment enchantment, int level, boolean restriction) {
+        itemMeta.addEnchant(enchantment, level, restriction);
         return this;
     }
 

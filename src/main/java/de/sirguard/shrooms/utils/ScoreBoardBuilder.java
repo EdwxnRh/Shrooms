@@ -17,7 +17,7 @@ public abstract class ScoreBoardBuilder {
 
     public ScoreBoardBuilder(Player player, String displayName) {
         this.player = player;
-        this.sPlayer = GameManager.playersMap.get(player);
+        this.sPlayer = GameManager.playersMap.get(player.getUniqueId().toString());
         if (player.getScoreboard().equals(Bukkit.getScoreboardManager().getMainScoreboard()))
             player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         this.scoreboard = player.getScoreboard();

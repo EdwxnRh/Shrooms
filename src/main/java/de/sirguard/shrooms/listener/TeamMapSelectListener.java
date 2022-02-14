@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.regex.Pattern;
 
-public class PlayerInventoryClickListener implements Listener {
+public class TeamMapSelectListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
@@ -42,11 +42,12 @@ public class PlayerInventoryClickListener implements Listener {
                     }
 
                     team.addPlayer(player);
-                    GameManager.playersMap.get(player).setTeam(team);
+                    GameManager.playersMap.get(player.getUniqueId().toString()).setTeam(team);
 
                     player.sendMessage(Shrooms.prefix + "§7You are now in team §" + Teams.getTeamByDisplayName(team.getName()).getColor() + team.getName());
                 }
             } else if (title.equals("§c§lVoting")) {
+                if (event.getCurrentItem() == null) return;
                 ItemStack item = event.getCurrentItem();
                 String map = item.getItemMeta().getDisplayName().replaceAll(Pattern.compile("§7 - by §b\\w+").pattern(), "").replaceAll("§b", "");
 

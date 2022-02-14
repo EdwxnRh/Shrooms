@@ -25,11 +25,22 @@ public class Team {
         this.name = name;
         this.players = new ArrayList<>();
 
-        upg.put("effi", 1);
-        upg.put("speed", 1);
-        upg.put("prot", 1);
-        upg.put("spawn", 1);
-        upg.put("sale", 1);
+        int defaultValue = 0;
+        upg.put("frugatility", defaultValue);
+        upg.put("speed", defaultValue);
+        upg.put("prot", defaultValue);
+        upg.put("resistance", defaultValue);
+        upg.put("tower warper", defaultValue);
+        upg.put("guard", defaultValue);
+        upg.put("spy", defaultValue);
+
+        upg.put("efficiency", defaultValue);
+        upg.put("swiftness", defaultValue);
+        upg.put("drop bonus", defaultValue);
+        upg.put("quick spawn", defaultValue);
+        upg.put("security", defaultValue);
+        upg.put("discount", defaultValue);
+
     }
 
     public void addPlayer(Player player) {

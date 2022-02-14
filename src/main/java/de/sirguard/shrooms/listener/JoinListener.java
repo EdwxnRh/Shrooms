@@ -53,8 +53,8 @@ public class JoinListener implements Listener {
             player.getInventory().clear();
             player.setGameMode(GameMode.ADVENTURE);
 
-            GameManager.playersMap.put(player, new SPlayer());
-            GameManager.playersMap.get(player).setScoreBoard(new ScoreBoard(player));
+            GameManager.playersMap.put(player.getUniqueId().toString(), new SPlayer());
+            GameManager.playersMap.get(player.getUniqueId().toString()).setScoreBoard(new ScoreBoard(player));
 
             for (Teams value : Teams.values()) {
                 if(player.getScoreboard().getTeam(value.getName()) == null) {

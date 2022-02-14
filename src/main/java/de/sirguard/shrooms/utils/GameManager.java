@@ -23,7 +23,7 @@ public class GameManager {
     public static HashMap<Player, HashMap<String, Object>> playersInTeamsEditMode = new HashMap<>();
     public static ArrayList<Player> playersInBuildMode = new ArrayList<>();
     public static HashMap<Player, Map> votedMap = new HashMap<>();
-    public static HashMap<Player, SPlayer> playersMap = new HashMap<>();
+    public static HashMap<String, SPlayer> playersMap = new HashMap<>();
     public static int teamAmount;
     public static int teamSize;
     public static HashMap<String, Map> maps = new HashMap<>();
@@ -32,13 +32,17 @@ public class GameManager {
     private static int schedulerID;
     public static Map map;
     public static ArrayList<Location> spawnerLocations = new ArrayList<>();
+    public static boolean forcestarted = false;
 
     public static void init() {
         teamAmount = (int) (double) ConfigManager.generalConfig.get("teams");
         teamSize = (int) (double) ConfigManager.generalConfig.get("teamSize");
+
         teams = new Team[teamAmount];
 
+
         Bukkit.setMaxPlayers(teamAmount * teamSize);
+
 
         loadMapsAndInitTeams();
 
@@ -48,6 +52,7 @@ public class GameManager {
             if(GameManager.maps.size() == 0) {
                 if(countdown % 30 == 0)
                     Bukkit.broadcast(Component.text(Shrooms.ERROR + "No maps were found. Please setup the game with /setup"));
+
                 countdown--;
 
                 if(countdown == 0)
@@ -61,7 +66,7 @@ public class GameManager {
                 minPlayer = 2;
             }
 
-            if(Bukkit.getOnlinePlayers().size() < minPlayer) {
+            if(Bukkit.getOnlinePlayers().size() < minPlayer && !forcestarted) {
                 if(countdown != COUNTDOWN_INIT_VALUE) {
                     countdown = COUNTDOWN_INIT_VALUE;
 
@@ -115,9 +120,12 @@ public class GameManager {
                 }
 
                 countdown--;
-                if(countdown+1 == 10) {
-                    loadVotedMap();
+                if (!forcestarted) {
+                    if (countdown + 1 == 10) {
+                        loadVotedMap();
+                    }
                 }
+
             }
         }, 0, 20);
     }
@@ -190,7 +198,7 @@ public class GameManager {
         }
     }
 
-    private static void loadVotedMap() {
+    public static void loadVotedMap() {
         GameManager.gameState = GameState.IDLE;
 
         if(votedMap.size() == 0) {
@@ -220,9 +228,12 @@ public class GameManager {
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
 
             for (Entity entity : world.getEntities()) {
-                if(!(entity instanceof Mob) || entity instanceof Player)
-                    continue;
-
+                if (entity instanceof Player) return;
+                entity.remove();
+            }
+        } else {
+            for (Entity entity : Bukkit.getWorld(GameManager.map.getName()).getEntities()) {
+                if (entity instanceof Player) return;
                 entity.remove();
             }
         }
@@ -233,16 +244,16 @@ public class GameManager {
         Bukkit.broadcast(Component.text(Shrooms.prefix + "§7The map " + "§b" + GameManager.map.getName() + "§7 - by §b" + GameManager.map.getBuilder() + " §7will be played!"));
     }
 
-    private static void initIngamePhase() {
+    public static void initIngamePhase() {
         GameManager.gameState = GameState.RUNNING;
         loop1: for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if(GameManager.playersMap.get(onlinePlayer).getTeam() != null)
+            if(GameManager.playersMap.get(onlinePlayer.getUniqueId().toString()).getTeam() != null)
                 continue loop1;
 
             Team team = getSmallestTeam();
 
             team.addPlayer(onlinePlayer);
-            GameManager.playersMap.get(onlinePlayer).setTeam(team);
+            GameManager.playersMap.get(onlinePlayer.getUniqueId().toString()).setTeam(team);
         }
 
         for (Team team : GameManager.teams) {

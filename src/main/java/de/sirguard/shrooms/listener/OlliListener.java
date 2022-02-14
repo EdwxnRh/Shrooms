@@ -45,7 +45,7 @@ public class OlliListener implements Listener {
         if (!(event.getWhoClicked() instanceof Player player) || event.getClickedInventory() == null ||
                 !event.getView().getTitle().equals(GUI_NAME) || event.getCurrentItem() == null) return;
 
-        SPlayer sPlayer = GameManager.playersMap.get(player);
+        SPlayer sPlayer = GameManager.playersMap.get(player.getUniqueId().toString());
 
         switch (event.getCurrentItem().getType()) {
             case GOLD_BLOCK:

@@ -1,5 +1,6 @@
 package de.sirguard.shrooms;
 
+import de.sirguard.shrooms.commands.ForceStartCommand;
 import de.sirguard.shrooms.commands.SetupCommand;
 import de.sirguard.shrooms.listener.*;
 import de.sirguard.shrooms.utils.ConfigManager;
@@ -48,15 +49,17 @@ public class Shrooms extends JavaPlugin {
 
         // Command registration
         getCommand("setup").setExecutor(new SetupCommand());
+        getCommand("fs").setExecutor(new ForceStartCommand());
+        getCommand("forcestart").setExecutor(new ForceStartCommand());
 
         // Listener registration
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new QuitListener(), this);
         Bukkit.getPluginManager().registerEvents(new SetupListeners(), this);
         Bukkit.getPluginManager().registerEvents(new LoginListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PreGameSelectListener(), this);
         Bukkit.getPluginManager().registerEvents(new DropListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerInventoryClickListener(), this);
+        Bukkit.getPluginManager().registerEvents(new TeamMapSelectListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockBreakListener(), this);
@@ -65,6 +68,9 @@ public class Shrooms extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerDamageListener(), this);
         Bukkit.getPluginManager().registerEvents(new OlliListener(), this);
         Bukkit.getPluginManager().registerEvents(new WorldListener(), this);
+        Bukkit.getPluginManager().registerEvents(new UpgradesListener(), this);
+        Bukkit.getPluginManager().registerEvents(new FireListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BankerListener(), this);
 
         System.out.println("§aStarted successfully.");
     }

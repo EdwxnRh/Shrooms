@@ -4,4 +4,6 @@ main: de.sirguard.shrooms.Shrooms
 api-version: 1.18
 commands:
   setup:
+  fs:
+  forcestart:
 
